@@ -21,8 +21,12 @@ function Organization() {
     >
       <form>
         <input placeholder="Search Boards..." type="text"></input>
-        <button type="submit">Search</button>
-        <button type="submit">Clear</button>
+        <button className="ml10" type="submit">
+          Search
+        </button>
+        <button className="ml10" type="submit">
+          Clear
+        </button>
       </form>
       <div style={{ marginTop: "12px" }}>
         <button onClick={turnModalOn}>Create a New Board</button>
@@ -56,10 +60,7 @@ function Organization() {
             </select>
             <labe>Author: </labe>
             <input type="text"></input>
-            <button
-              style={{ marginTop: "10px", marginLeft: "0px" }}
-              onClick={turnModalOff}
-            >
+            <button style={{ marginTop: "10px" }} onClick={turnModalOff}>
               Close
             </button>
           </div>

@@ -7,7 +7,9 @@
 h1 {
   font-size: 32px;
 }
-
+.mb10{
+  margin-bottom: 10px;
+}
 .modal {
    display: flex; /*will be flex when shown*/
    position: fixed; /* Stay in place */

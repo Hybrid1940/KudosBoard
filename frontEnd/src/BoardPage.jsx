@@ -18,8 +18,11 @@ function BoardPage() {
 
   return (
     <>
+      <a href="http://localhost:5173/">Back</a>
       <h1>Board 1</h1>
-      <button onClick={turnModalOn}>Create a Card</button>
+      <button onClick={turnModalOn} style={{ marginBottom: "20px" }}>
+        Create a Card
+      </button>
       <CardList />
       {showModal && (
         <div id="createBoardModal" className="modal">
@@ -28,20 +31,34 @@ function BoardPage() {
             style={{ display: "flex", flexDirection: "column" }}
           >
             <h2>Create a New Board</h2>
-            <label>Title:</label>
-            <input type="text"></input>
-            <labe>Category: </labe>
-            <select>
-              <option value="">Select a category</option>
-              <option value="recent">Celebration</option>
-              <option value="votes">Thank You</option>
-              <option value="votes">Inspiration</option>
-            </select>
-            <labe>Author: </labe>
-            <input type="text"></input>
-            <button style={{ marginLeft: "0px" }} onClick={turnModalOff}>
-              Close
-            </button>
+            <input
+              type="text"
+              className="mb10"
+              placeholder="Enter Card title"
+            ></input>
+            <input
+              type="text"
+              className="mb10"
+              placeholder="Enter Card Description"
+            ></input>
+            <input
+              className="mb10"
+              type="text"
+              placeholder="Search Gifs"
+            ></input>
+            <button className="mb10">Search</button>
+            <input
+              className="mb10"
+              type="text"
+              placeholder="Enter Gif URL"
+            ></input>
+            <button className="mb10">Copy Gif URL</button>
+            <input
+              className="mb10"
+              type="text"
+              placeholder="Enter Owner (optional)"
+            ></input>
+            <button onClick={turnModalOff}>Create Card</button>
           </div>
         </div>
       )}
