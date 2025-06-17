@@ -55,8 +55,13 @@ function Organization() {
               <option value="votes">Inspiration</option>
             </select>
             <labe>Author: </labe>
-            <input style={{ width: "90%" }} type="text"></input>
-            <button onClick={turnModalOff}>Close</button>
+            <input type="text"></input>
+            <button
+              style={{ marginTop: "10px", marginLeft: "0px" }}
+              onClick={turnModalOff}
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
