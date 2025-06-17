@@ -8,11 +8,20 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model boards {
+model board {
   id       Int    @id @default(autoincrement())
   name     String
   category String
   Author   String
+  Cards    card[]
+}
+
+model card {
+  id      Int    @id @default(autoincrement())
+  name    String
+  likes   Int
+  board   board? @relation(fields: [boardId], references: [id])
+  boardId Int?
 }
 
 datasource db {
