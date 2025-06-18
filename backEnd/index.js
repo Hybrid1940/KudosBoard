@@ -9,7 +9,7 @@ app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`)
 })
 
-app.use( projectRoutes);
+app.use(projectRoutes);
 
 app.get('/', (req, res) => {
   res.send('Welcome to my app!')

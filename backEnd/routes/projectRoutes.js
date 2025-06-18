@@ -6,15 +6,18 @@ const prisma = new PrismaClient;
 //CRUD for Boards
 //prints all boards
 router.get('/boards', async (req, res) => {
-  const boards = await prisma.board.findMany()
-  res.json(boards)
+  const boards = await prisma.board.findMany();
+  res.json(boards);
 })
 //prints 1 board
 router.get('/:boardId', async (req, res) => {
   const boardId = parseInt(req.params.boardId)
   console.log(boardId);
   const task = await prisma.board.findUnique({
-    where:{id:parseInt(boardId)}
+    where:{id:parseInt(boardId)},
+    include: {
+        Cards:true,
+    }
   });
   console.log(task);
   res.json(task);
@@ -53,6 +56,34 @@ router.put('/:boardId', async (req, res) => {
     }
   });
   res.json(nBoard);
+})
+
+
+//prints 1 boards cards
+router.get('/:boardId/:cardId', async (req, res) => {
+  const boardId = parseInt(req.params.boardId);
+  const cardId = parseInt(req.params.cardId);
+
+  const card = await prisma.board.findUnique({
+    where:{id:parseInt(boardId)},
+    include: {
+        Cards:true,
+    }
+  }).then((board) =>board?.Cards[cardId-1]);
+  console.log(card);
+  res.json(card);
+})
+
+router.delete('/:boardId/:cardId', async (req, res) => {
+  const boardId = parseInt(req.params.boardId);
+  const cardId = parseInt(req.params.cardId);
+
+  const card = prisma.card.delete({
+    where:{
+        id:parseInt(cardId),
+        boardId:parseInt(boardId)
+    }})
+  res.json(card);
 })
 
 module.exports = router
