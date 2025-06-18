@@ -6,7 +6,7 @@ import Board from "./Board";
 function BoardList() {
   const [boards, setBoards] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:3000/boards")
+    fetch("https://kudosboard-447p.onrender.com/boards")
       .then((response) => response.json())
       .then((boards) => setBoards(boards))
       .catch((error) => console.error("Error fetching posts:", error));
