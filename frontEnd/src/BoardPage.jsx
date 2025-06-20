@@ -11,6 +11,7 @@ function BoardPage() {
   const [updateCard, setUpdateCard] = useState(false);
   const [board, setBoard] = useState({ Cards: [] });
   const { id } = useParams();
+  const mainPage = `${window.location.origin}`;
   const apiKey = import.meta.env.VITE_APP_API_KEY;
   console.log(apiKey);
   const turnModalOff = (event) => {
@@ -85,7 +86,7 @@ function BoardPage() {
   };
   return (
     <>
-      <a href="http://localhost:5173/">Back</a>
+      <a href={mainPage}>Back</a>
       <h1>{board.name}</h1>
       <button onClick={turnModalOn} style={{ marginBottom: "20px" }}>
         Create a Card

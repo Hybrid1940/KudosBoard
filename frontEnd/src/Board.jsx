@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { useState } from "react";
 
 function Board({ boards, onBoardsChange, key, name, category, id }) {
-  const boardSite = `http://localhost:5173/${id}`;
+  const boardSite = `${window.location.href}${id}`;
 
   const deleteFunction = async (event) => {
     event.preventDefault();
