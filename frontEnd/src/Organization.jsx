@@ -19,6 +19,17 @@ const Organization = ({ boards, onBoardsChange }) => {
 
   const submitFormData = async (event) => {
     event.preventDefault();
+
+    if (document.getElementById("categorySelect").value === "") {
+      alert("Fill in category");
+      return;
+    }
+
+    if (document.getElementById("name").value === "") {
+      alert("Fill in title");
+      return;
+    }
+
     const form = document.getElementById("bForm");
     const formData = new FormData(form);
     const readableData = Object.fromEntries(formData);
@@ -46,8 +57,9 @@ const Organization = ({ boards, onBoardsChange }) => {
         .then((response) => response.json())
         .then((boards) => onBoardsChange(boards))
         .catch((error) => console.error("Error fetching posts:", error));
-      console.log(boards.slice(boards.length - 6, boards.length));
-      onBoardsChange(boards.slice(boards.length - 6, boards.length));
+      if (boards.length > 6) {
+        onBoardsChange(boards.slice(boards.length - 6, boards.length));
+      }
     } else if (event.target.value === "celebration") {
       await fetch("http://localhost:3000/boards?category=Celebration")
         .then((response) => response.json())
@@ -69,12 +81,24 @@ const Organization = ({ boards, onBoardsChange }) => {
     }
   };
 
-  const searchFunction = (event) => {
+  const searchFunction = async (event) => {
     event.preventDefault();
+    const searchTerm = document.getElementById("search").value;
+    await fetch(`http://localhost:3000/boards?name=${searchTerm}`)
+      .then((response) => response.json())
+      .then((boards) => onBoardsChange(boards))
+      .catch((error) => console.error("Error fetching posts:", error));
   };
 
-  const clearFunction = (event) => {
+  const clearFunction = async (event) => {
     event.preventDefault();
+    await fetch("http://localhost:3000/boards")
+      .then((response) => response.json())
+      .then((boards) => onBoardsChange(boards))
+      .catch((error) => console.error("Error fetching posts:", error));
+
+    document.getElementById("search").value = "";
+    document.getElementById("sortOptions").value = "All";
   };
 
   return (
@@ -82,11 +106,11 @@ const Organization = ({ boards, onBoardsChange }) => {
       style={{ display: "flex", flexDirection: "column", marginBottom: "20px" }}
     >
       <form>
-        <input placeholder="Search Boards..." type="text"></input>
-        <button className="ml10" type="submit">
+        <input id="search" placeholder="Search Boards..." type="text"></input>
+        <button onClick={searchFunction} className="ml10" type="submit">
           Search
         </button>
-        <button className="ml10" type="submit">
+        <button onClick={clearFunction} className="ml10" type="submit">
           Clear
         </button>
       </form>
@@ -111,15 +135,18 @@ const Organization = ({ boards, onBoardsChange }) => {
             className="modal-content"
             style={{ display: "flex", flexDirection: "column" }}
           >
+            <button onClick={turnModalOff}>X</button>
             <h2>Create a New Board</h2>
             <form
               style={{ display: "flex", flexDirection: "column" }}
               id="bForm"
             >
               <label htmlFor="name">Title:</label>
-              <input name="name" type="text"></input>
-              <label htmlFor="category">Category: </label>
-              <select name="category">
+              <input id="name" name="name" type="text" required></input>
+              <label htmlFor="category" required>
+                Category:
+              </label>
+              <select id="categorySelect" name="category">
                 <option value="">Select a category</option>
                 <option value="Celebration">Celebration</option>
                 <option value="Thank You">Thank You</option>
@@ -128,6 +155,7 @@ const Organization = ({ boards, onBoardsChange }) => {
               <label htmlFor="Author">Author: </label>
               <input name="Author" type="text"></input>
               <button
+                type="submit"
                 id="bFormSubmit"
                 style={{ marginTop: "10px" }}
                 onClick={submitFormData}

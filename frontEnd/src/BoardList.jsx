@@ -23,6 +23,8 @@ const BoardList = ({ boards, onBoardsChange }) => {
       {boards.map((board) => {
         return (
           <Board
+            boards={boards}
+            onBoardsChange={onBoardsChange}
             key={board.name}
             name={board.name}
             category={board.category}

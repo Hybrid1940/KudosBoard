@@ -9,7 +9,7 @@ router.get('/boards', async (req, res) => {
   const {name, category, author} = req.query;
   const filters = {};
   if(name){
-    filters.name = name;
+    filters.name = {contains: name, mode: 'insensitive'};
   }
   if(category){
     filters.category = category;
