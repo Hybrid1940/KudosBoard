@@ -2,15 +2,31 @@ import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useState } from "react";
 
-function Board(props) {
-  const boardSite = `http://localhost:5173/${props.id}`;
+function Board({ boards, onBoardsChange, key, name, category, id }) {
+  const boardSite = `${window.location.href}${id}`;
+
+  const deleteFunction = async (event) => {
+    event.preventDefault();
+    const response = await fetch(`http://localhost:3000/${id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    fetch("http://localhost:3000/boards")
+      .then((response) => response.json())
+      .then((boards) => onBoardsChange(boards))
+      .catch((error) => console.error("Error fetching posts:", error));
+  };
+
   return (
     <div className="card">
       <img src="https://picsum.photos/200/300?random=87"></img>
-      <h3>{props.name}</h3>
-      <p>{props.category}</p>
+      <h3>{name}</h3>
+      <p>{category}</p>
       <a href={boardSite}>View Board</a>
-      <button className="ml10">Delete</button>
+      <button className="ml10" onClick={deleteFunction}>
+        Delete
+      </button>
     </div>
   );
 }
