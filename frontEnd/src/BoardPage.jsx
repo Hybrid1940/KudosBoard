@@ -2,10 +2,14 @@ import { useState } from "react";
 import "./App.css";
 import Organization from "./Organization";
 import BoardList from "./BoardList";
-import CardList from "./CardList";
+import Card from "./Card";
+import { useParams } from "react-router";
+import { useEffect } from "react";
 
 function BoardPage() {
   const [showModal, setShowModal] = useState(false);
+  const [board, setBoard] = useState({ Cards: [] });
+  const { id } = useParams();
 
   const turnModalOff = (event) => {
     event.stopPropagation();
@@ -16,6 +20,13 @@ function BoardPage() {
     setShowModal(true);
   };
 
+  useEffect(() => {
+    fetch(`http://localhost:3000/${id}`)
+      .then((response) => response.json())
+      .then((board) => setBoard(board))
+      .catch((error) => console.error("Error fetching posts:", error));
+  }, []);
+  console.log(board.Cards);
   return (
     <>
       <a href="http://localhost:5173/">Back</a>
@@ -23,7 +34,16 @@ function BoardPage() {
       <button onClick={turnModalOn} style={{ marginBottom: "20px" }}>
         Create a Card
       </button>
-      <CardList />
+      <section
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+        }}
+      >
+        {board.Cards.map((card) => {
+          return <Card name={card.name} likes={card.likes} />;
+        })}
+      </section>
       {showModal && (
         <div id="createBoardModal" className="modal">
           <div
