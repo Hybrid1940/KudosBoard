@@ -76,7 +76,7 @@ function BoardPage() {
     readableData.likes = 0;
     console.log(readableData);
 
-    const response = await fetch(`http://localhost:3000/${id}`, {
+    const response = await fetch(`${backednUrl}/${id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(readableData),

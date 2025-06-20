@@ -13,9 +13,10 @@ function Card({
   onCardChange,
   updateCard,
 }) {
+  const backednUrl = import.meta.env.VITE_BACKEND;
   const deleteCard = async (event) => {
     event.preventDefault();
-    const response = await fetch(`http://localhost:3000/${boardId}/${id}`, {
+    const response = await fetch(`${backednUrl}/${boardId}/${id}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     });
@@ -25,11 +26,11 @@ function Card({
 
   const upVoteCard = async (event) => {
     event.preventDefault();
-    const dataValues = await fetch(`http://localhost:3000/${boardId}/${id}`);
+    const dataValues = await fetch(`${backednUrl}/${boardId}/${id}`);
     const newData = await dataValues.json();
     likes = likes + 1;
     newData.likes = likes;
-    const response = await fetch(`http://localhost:3000/${boardId}/${id}`, {
+    const response = await fetch(`${backednUrl}/${boardId}/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newData),
