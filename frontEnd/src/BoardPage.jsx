@@ -13,6 +13,7 @@ function BoardPage() {
   const { id } = useParams();
   const mainPage = `${window.location.origin}`;
   const apiKey = import.meta.env.VITE_APP_API_KEY;
+  const backednUrl = import.meta.env.VITE_BACKEND;
   console.log(apiKey);
   const turnModalOff = (event) => {
     event.stopPropagation();
@@ -24,7 +25,7 @@ function BoardPage() {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:3000/${id}`)
+    fetch(`${backednUrl}/${id}`)
       .then((response) => response.json())
       .then((board) => setBoard(board))
       .catch((error) => console.error("Error fetching posts:", error));

@@ -4,15 +4,16 @@ import { useState } from "react";
 
 function Board({ boards, onBoardsChange, key, name, category, id }) {
   const boardSite = `${window.location.href}${id}`;
+  const backednUrl = import.meta.env.VITE_BACKEND;
 
   const deleteFunction = async (event) => {
     event.preventDefault();
-    const response = await fetch(`http://localhost:3000/${id}`, {
+    const response = await fetch(`${backednUrl}/${id}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     });
 
-    fetch("http://localhost:3000/boards")
+    fetch(`${backednUrl}/boards`)
       .then((response) => response.json())
       .then((boards) => onBoardsChange(boards))
       .catch((error) => console.error("Error fetching posts:", error));

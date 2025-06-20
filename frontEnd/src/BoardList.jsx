@@ -4,8 +4,9 @@ import ReactDOM from "react-dom";
 import Board from "./Board";
 
 const BoardList = ({ boards, onBoardsChange }) => {
+  const backednUrl = import.meta.env.VITE_BACKEND;
   useEffect(() => {
-    fetch("http://localhost:3000/boards")
+    fetch(`${backednUrl}/boards`)
       .then((response) => response.json())
       .then((boards) => onBoardsChange(boards))
       .catch((error) => console.error("Error fetching posts:", error));

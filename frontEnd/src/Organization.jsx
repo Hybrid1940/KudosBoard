@@ -7,7 +7,7 @@ import { data } from "react-router";
 const Organization = ({ boards, onBoardsChange }) => {
   const [showModal, setShowModal] = useState(false);
   const [allBoards, setAllBoards] = useState([]);
-
+  const backednUrl = import.meta.env.VITE_BACKEND;
   const turnModalOff = (event) => {
     event.stopPropagation();
     setShowModal(false);
@@ -34,7 +34,7 @@ const Organization = ({ boards, onBoardsChange }) => {
     const formData = new FormData(form);
     const readableData = Object.fromEntries(formData);
     console.log(readableData);
-    const response = await fetch("http://localhost:3000/boards", {
+    const response = await fetch(`${backednUrl}/boards`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(readableData),
@@ -48,12 +48,12 @@ const Organization = ({ boards, onBoardsChange }) => {
   const sortFunction = async (event) => {
     event.stopPropagation();
     if (event.target.value === "All") {
-      await fetch("http://localhost:3000/boards")
+      await fetch(`${backednUrl}/boards`)
         .then((response) => response.json())
         .then((boards) => onBoardsChange(boards))
         .catch((error) => console.error("Error fetching posts:", error));
     } else if (event.target.value === "recent") {
-      await fetch("http://localhost:3000/boards")
+      await fetch(`${backednUrl}/boards`)
         .then((response) => response.json())
         .then((boards) => onBoardsChange(boards))
         .catch((error) => console.error("Error fetching posts:", error));
@@ -61,19 +61,19 @@ const Organization = ({ boards, onBoardsChange }) => {
         onBoardsChange(boards.slice(boards.length - 6, boards.length));
       }
     } else if (event.target.value === "celebration") {
-      await fetch("http://localhost:3000/boards?category=Celebration")
+      await fetch(`${backednUrl}/boards?category=Celebration`)
         .then((response) => response.json())
         .then((boards) => onBoardsChange(boards))
         .catch((error) => console.error("Error fetching posts:", error));
       console.log(boards);
     } else if (event.target.value === "thank you") {
-      await fetch("http://localhost:3000/boards?category=Thank You")
+      await fetch(`${backednUrl}/boards?category=Thank You`)
         .then((response) => response.json())
         .then((boards) => onBoardsChange(boards))
         .catch((error) => console.error("Error fetching posts:", error));
       console.log(boards);
     } else if (event.target.value === "inspiration") {
-      await fetch("http://localhost:3000/boards?category=Inspiration")
+      await fetch(`${backednUrl}/boards?category=Inspiration`)
         .then((response) => response.json())
         .then((boards) => onBoardsChange(boards))
         .catch((error) => console.error("Error fetching posts:", error));
@@ -84,7 +84,7 @@ const Organization = ({ boards, onBoardsChange }) => {
   const searchFunction = async (event) => {
     event.preventDefault();
     const searchTerm = document.getElementById("search").value;
-    await fetch(`http://localhost:3000/boards?name=${searchTerm}`)
+    await fetch(`${backednUrl}/boards?name=${searchTerm}`)
       .then((response) => response.json())
       .then((boards) => onBoardsChange(boards))
       .catch((error) => console.error("Error fetching posts:", error));
@@ -92,7 +92,7 @@ const Organization = ({ boards, onBoardsChange }) => {
 
   const clearFunction = async (event) => {
     event.preventDefault();
-    await fetch("http://localhost:3000/boards")
+    await fetch(`${backednUrl}/boards`)
       .then((response) => response.json())
       .then((boards) => onBoardsChange(boards))
       .catch((error) => console.error("Error fetching posts:", error));
