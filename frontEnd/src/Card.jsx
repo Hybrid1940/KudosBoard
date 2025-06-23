@@ -1,7 +1,3 @@
-import React, { useEffect } from "react";
-import ReactDOM from "react-dom";
-import { useState } from "react";
-
 function Card({
   id,
   boardId,
@@ -14,6 +10,7 @@ function Card({
   updateCard,
 }) {
   const backednUrl = import.meta.env.VITE_BACKEND;
+  //functionality to delete a card
   const deleteCard = async (event) => {
     event.preventDefault();
     const response = await fetch(`${backednUrl}/${boardId}/${id}`, {
@@ -23,7 +20,7 @@ function Card({
 
     onCardChange(!updateCard);
   };
-
+  //upvote card functionality
   const upVoteCard = async (event) => {
     event.preventDefault();
     const dataValues = await fetch(`${backednUrl}/${boardId}/${id}`);
@@ -40,6 +37,7 @@ function Card({
   };
 
   return (
+    //returned card
     <div className="card">
       <h3>{name}</h3>
       <p>{description}</p>

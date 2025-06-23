@@ -1,11 +1,8 @@
-import React, { useEffect } from "react";
-import ReactDOM from "react-dom";
-import { useState } from "react";
-
 function Board({ boards, onBoardsChange, key, name, category, id }) {
   const boardSite = `${window.location.href}${id}`;
   const backednUrl = import.meta.env.VITE_BACKEND;
 
+  //delete function that will remove a board from the database.
   const deleteFunction = async (event) => {
     event.preventDefault();
     const response = await fetch(`${backednUrl}/${id}`, {

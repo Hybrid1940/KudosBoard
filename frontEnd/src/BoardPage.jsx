@@ -1,29 +1,31 @@
 import { useState } from "react";
 import "./App.css";
-import Organization from "./Organization";
-import BoardList from "./BoardList";
 import Card from "./Card";
 import { useParams } from "react-router";
 import { useEffect } from "react";
 
 function BoardPage() {
+  //boolean for modal
   const [showModal, setShowModal] = useState(false);
+  //triger to update info
   const [updateCard, setUpdateCard] = useState(false);
+  //holds all cards
   const [board, setBoard] = useState({ Cards: [] });
   const { id } = useParams();
   const mainPage = `${window.location.origin}`;
+  //evironment variables
   const apiKey = import.meta.env.VITE_APP_API_KEY;
   const backednUrl = import.meta.env.VITE_BACKEND;
-  console.log(apiKey);
+  //function to turn modal off
   const turnModalOff = (event) => {
     event.stopPropagation();
     setShowModal(false);
   };
-
+  //function to turn modal on
   const turnModalOn = () => {
     setShowModal(true);
   };
-
+  //loads appropriate cards and is set to trigger whenever a card is updated.
   useEffect(() => {
     fetch(`${backednUrl}/${id}`)
       .then((response) => response.json())
@@ -31,8 +33,10 @@ function BoardPage() {
       .catch((error) => console.error("Error fetching posts:", error));
   }, [updateCard]);
 
+  //searches gifs based on a value
   const searchForGifs = async (event) => {
     event.preventDefault();
+    //fetch for the gifs
     document.getElementById("gifResultsHolder").innerHTML = "";
     const gifFetch = await fetch(
       `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${
@@ -40,6 +44,7 @@ function BoardPage() {
       }&limit=6`
     ).then((response) => response.json());
 
+    //prints all fetched data
     for (let i = 0; i < gifFetch.data.length; i++) {
       const nGif = document.createElement("img");
       nGif.width = 175;
@@ -53,29 +58,31 @@ function BoardPage() {
         document.getElementById("gifUrl").value =
           gifFetch.data[i].images.original.url;
       };
-
+      //appends gif in the form
       nGif.src = gifFetch.data[i].images.original.url;
       document.getElementById("gifResultsHolder").appendChild(nGif);
     }
   };
 
+  //function to create a new card at the end of the form
   const createNewCard = async (event) => {
     event.preventDefault();
-
+    //stops if the description is empty
     if (document.getElementById("description").value === "") {
       alert("Fill in description");
       return;
     }
+    //stops if the gif url is empty
     if (document.getElementById("gifUrl").value === "") {
       alert("Fill in gif");
       return;
     }
-
+    //grabs form data
     const formData = new FormData(document.getElementById("newCardForm"));
     const readableData = Object.fromEntries(formData);
     readableData.likes = 0;
-    console.log(readableData);
 
+    //posts to backend
     const response = await fetch(`${backednUrl}/${id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -85,19 +92,23 @@ function BoardPage() {
     const result = await response.json();
     setShowModal(false);
   };
+
   return (
     <>
       <a href={mainPage}>Back</a>
       <h1>{board.name}</h1>
+      {/* create card button */}
       <button onClick={turnModalOn} style={{ marginBottom: "20px" }}>
         Create a Card
       </button>
+      {/* holder for all cards */}
       <section
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
         }}
       >
+        {/* cycles through all cards */}
         {board.Cards.map((card) => {
           return (
             <Card
@@ -117,6 +128,7 @@ function BoardPage() {
         })}
       </section>
       {showModal && (
+        //modal that hosts functionality to make a card
         <div id="createBoardModal" className="modal">
           <div
             className="modal-content"
