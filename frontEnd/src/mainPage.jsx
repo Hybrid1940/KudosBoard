@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import Organization from "./Organization";
 import BoardList from "./BoardList";
-
+//main page layout for the page
 function MainPage() {
   const [boards, setBoards] = useState([]);
   return (

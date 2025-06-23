@@ -1,25 +1,23 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
-import { data } from "react-router";
 
 const Organization = ({ boards, onBoardsChange }) => {
+  //application contsants
   const [showModal, setShowModal] = useState(false);
-  const [allBoards, setAllBoards] = useState([]);
   const backednUrl = import.meta.env.VITE_BACKEND;
+  //turn modal off function
   const turnModalOff = (event) => {
     event.stopPropagation();
     setShowModal(false);
   };
-
+  //turn modal on function
   const turnModalOn = () => {
     setShowModal(true);
   };
-
+  //function to submit the form to the backend
   const submitFormData = async (event) => {
     event.preventDefault();
-
+    //stops if category or title not selected
     if (document.getElementById("categorySelect").value === "") {
       alert("Fill in category");
       return;
@@ -29,11 +27,10 @@ const Organization = ({ boards, onBoardsChange }) => {
       alert("Fill in title");
       return;
     }
-
+    //posts to backend
     const form = document.getElementById("bForm");
     const formData = new FormData(form);
     const readableData = Object.fromEntries(formData);
-    console.log(readableData);
     const response = await fetch(`${backednUrl}/boards`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -44,7 +41,7 @@ const Organization = ({ boards, onBoardsChange }) => {
     onBoardsChange((prev) => [...prev, result]);
     setShowModal(false);
   };
-
+  //function to access boards with a certain category, checks the value of the dropdown and makes the proper call
   const sortFunction = async (event) => {
     event.stopPropagation();
     if (event.target.value === "All") {
@@ -65,22 +62,19 @@ const Organization = ({ boards, onBoardsChange }) => {
         .then((response) => response.json())
         .then((boards) => onBoardsChange(boards))
         .catch((error) => console.error("Error fetching posts:", error));
-      console.log(boards);
     } else if (event.target.value === "thank you") {
       await fetch(`${backednUrl}/boards?category=Thank You`)
         .then((response) => response.json())
         .then((boards) => onBoardsChange(boards))
         .catch((error) => console.error("Error fetching posts:", error));
-      console.log(boards);
     } else if (event.target.value === "inspiration") {
       await fetch(`${backednUrl}/boards?category=Inspiration`)
         .then((response) => response.json())
         .then((boards) => onBoardsChange(boards))
         .catch((error) => console.error("Error fetching posts:", error));
-      console.log(boards);
     }
   };
-
+  //functionality to search titles in the backend
   const searchFunction = async (event) => {
     event.preventDefault();
     const searchTerm = document.getElementById("search").value;
@@ -103,8 +97,10 @@ const Organization = ({ boards, onBoardsChange }) => {
 
   return (
     <div
+      id=""
       style={{ display: "flex", flexDirection: "column", marginBottom: "20px" }}
     >
+      {/* form to search for boards */}
       <form>
         <input id="search" placeholder="Search Boards..." type="text"></input>
         <button onClick={searchFunction} className="ml10" type="submit">
@@ -129,11 +125,12 @@ const Organization = ({ boards, onBoardsChange }) => {
           <option value="inspiration">Inspiration</option>
         </select>
       </div>
+      {/* modal to make a board */}
       {showModal && (
         <div id="createBoardModal" className="modal">
           <div
             className="modal-content"
-            style={{ display: "flex", flexDirection: "column" }}
+            style={{ width: "50%", display: "flex", flexDirection: "column" }}
           >
             <button onClick={turnModalOff}>X</button>
             <h2>Create a New Board</h2>
